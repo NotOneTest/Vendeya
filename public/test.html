@@ -1,0 +1,33 @@
+<html>
+<body>
+<h2>Test Voucher Creation</h2>
+<button onclick="createVale()">CREATE VALE NOW</button>
+<div id="result"></div>
+<script>
+async function createVale() {
+    const data = {
+        document_type: 'vale',
+        serie: 'V001',
+        customer_id: 4,
+        total: 33.00,
+        payment_method: '05'
+    };
+    
+    try {
+        const response = await fetch('/vendeya/sale/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(result, null, 2) + '</pre>';
+    } catch(e) {
+        document.getElementById('result').innerHTML = 'Error: ' + e.message;
+    }
+}
+</script>
+</body>
+</html>
